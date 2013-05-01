@@ -1,0 +1,19 @@
+#pauseGame, #resetGame, #generation, #resumeGame {
+	display: none;
+}
+
+.gameGrid {
+	margin: 20px auto 0 auto;
+}
+
+.gameRow {
+    height: 15px;	
+}
+
+.gameCol {
+	width: 15px;
+}
+
+td.alive {
+	background: #000000;
+}

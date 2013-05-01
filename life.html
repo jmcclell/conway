@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Conway's Game of Life</title>
+	<link type="text/css" rel="stylesheet" href="life.css"/>
+</head>
+<body>
+	<h1>Conway's Game of Life</h1>
+	<form>
+	    <label>X:<input id="xSize" class="noOnFlyChange initialStateParam" type="text" value="20"/></label>
+	    <label>Y:<input id="ySize" class="noOnFlyChange initialStateParam" type="text" value="20"/></label>
+	    <label>Speed:
+	        <select id="speed">
+	        	<option selected value="50">Cheetah</option>
+	        	<option value="500">Fast</option>
+	        	<option value="1000">Medium</option>
+	        	<option value="1500">Slow</option>
+	        	<option value="2500">Snail</option>
+	        </select>
+	    </label>
+	    <label>Seed:<input id="seed" class="noOnFlyChange initialStateParam" type="text"></label>	
+	    <a id="randomSeed" class="noOnFlyChange" href="#">random</a>    
+	    <button type="button" id="startGame">Start</button>
+	    <button type="button" id="pauseGame">Pause</button>
+	    <button type="button" id="resumeGame">Resume</button>
+	    <button type="button" id="resetGame">Reset</button>
+	    <label id="generation">Generation: <span></span></label>
+	</form>
+	<div id="gameView">
+	</div>
+	<script type="text/javascript" src="seedableRandom.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript" src="life.js"></script> 
+</body>
+</html>
