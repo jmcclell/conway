@@ -206,30 +206,24 @@ $(function(){
 		return initialGameState;
 	}
 	
-	// Computes the next generation for the game state and fires a callback if given
+	// Computes the next generation for the game state
 	// This is the actual game of life algorithm
 	function gameTick(currentGameState) {
-		var newGameState = [];
+		/*
+		 * Rules:
+		 *	 1. A live cell with < 2 or > 3 neighbors dies
+		 *   2. A live cell with exactly 2 or 3 neighbors lives
+		 *   3. A dead cell with exactly 3 neighbors comes to life
+		 *
+		 *  Note: An outer boundary is considered a dead adjacent cell
+		 */
 		
-		var rows = currentGameState.length;
-		for(var i = 0; i < rows; i++) {
-			var cols = currentGameState[i].length;
-			newGameState[i] = [];
-			for(var j = 0; j < cols; j++) {
-				/*
-				 * Rules:
-				 *	 1. A live cell with < 2 or > 3 neighbors dies
-				 *   2. A live cell with exactly 2 or 3 neighbors lives
-				 *   3. A dead cell with exactly 3 neighbors comes to life
-				 *
-				 *  Note: An outer boundary is considered a dead adjacent cell
-				 */
-				 var liveNeighborCount = countNeighbors(currentGameState, i, j);
-				 newGameState[i][j] = (currentGameState[i][j]) ? (liveNeighborCount === 2 || liveNeighborCount == 3) : (liveNeighborCount === 3);
-			}
-		}
-
-		return newGameState;
+		return currentGameState.map(function(row, rowIndex, state) {
+			return row.map(function(cell, cellIndex) {
+				var liveNeighborCount = countNeighbors(state, rowIndex, cellIndex);
+				return (cell) ? (liveNeighborCount === 2 || liveNeighborCount == 3) : (liveNeighborCount === 3);
+			});
+		});
  	}
 	
 	// Count the number of living neighbors for a given cell
