@@ -55,28 +55,28 @@ $(function(){
 		var gameLoop = generateGameLoop();
 		
 		// Catch speed changes and update scope
-		$('#speed').on('change', function() {
-		    speed = $(this).val();
-		    pauseGame(gameLoop);
+		$('#speed').off('change').on('change', function() {
+			pauseGame(gameLoop);
+			speed = $(this).val();		    
 		    gameLoop = generateGameLoop();
 		});
 		
 		// Handle pausing by pausing the game loop, hiding pause, and showing resume
-		$('#pauseGame').on('click', function() {
+		$('#pauseGame').off('click').on('click', function() {
     		pauseGame(gameLoop);
     		$(this).hide();
     		$('#resumeGame').show();
     	});
 		
 		// Handle resuming by recreating the game loop, hiding the resume button, and showing pause
-		$('#resumeGame').on('click', function() {
+		$('#resumeGame').off('click').on('click', function() {
 			gameLoop = resumeGame();
 			$(this).hide();
 			$('#pauseGame').show();
 		});
 		
 		// Handle reset by pausing the game loop, resetting state, enabling the form fields, hiding pause/resume, and showing start
-    	$('#resetGame').on('click', function() {
+    	$('#resetGame').off('click').on('click', function() {
     		pauseGame();
     		gameState = [];
     		gameLoop = null;
