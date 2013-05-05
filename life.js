@@ -49,7 +49,7 @@ $(function(){
 		
 		// Initialize the game state, paint the initial view, and start the game loop
 		var gameState = initializeGameState(xSize, ySize, seed);
-		paintGameView(gameState);
+		var currentGameView = paintGameView(gameState);
 		var generation = 0; // Initialize it as 0 and then run the updater which increments it to 1 and displays it for the seed state
 		updateGenerationCounter();
 		var gameLoop = generateGameLoop();
@@ -81,6 +81,7 @@ $(function(){
     		gameState = [];
     		gameLoop = null;
     		generation = 0;
+    		currentGameView = null;
     		$('#gameView').empty();
     		$('#generation,#pauseGame,#resumeGame').hide();
     		$('.noOnFlyChange').removeAttr('disabled');
@@ -107,7 +108,7 @@ $(function(){
     	function generateGameLoop() {
     		return setInterval(function() {
     			gameState = gameTick(gameState);
-    			paintGameView(gameState);
+    			currentGameView = paintGameView(gameState, currentGameView);
     			updateGenerationCounter();
     		}, speed);
     	}
@@ -160,23 +161,38 @@ $(function(){
 	}
 	
 	// Paint the game view based on the given game state
-	function paintGameView(gameState) {
-		var gameGrid = $('<table></table>').addClass('gameGrid');
-		for(var i = 0; i < gameState.length; i++) {
-		    var row = $('<tr></tr>').addClass('gameRow');
-		    for (var j = 0; j < gameState[i].length; j++) {
-		    	var col = $('<td></td>').addClass('gameCol');
-		    	if (gameState[i][j] === true) {
-		    		col.addClass('alive');
-		    	}
-		    	row.append(col);
-		    }
-		    gameGrid.append(row);
+	function paintGameView(gameState, currentGameGrid) {
+		if (currentGameGrid) {
+			currentGameGrid.find('tbody>tr').each(function(rowIndex, row) {
+				row = $(row);
+				row.children().each(function(colIndex, col) {
+					col = $(col);
+					if(gameState[rowIndex][colIndex] === true) {
+						col.addClass('alive');
+					} else {
+						col.removeClass('alive');
+					}
+				});
+			});
+		} else {
+			currentGameGrid = $('<table></table>').addClass('gameGrid');
+			for(var i = 0; i < gameState.length; i++) {
+			    var row = $('<tr></tr>').addClass('gameRow');
+			    for (var j = 0; j < gameState[i].length; j++) {
+			    	var col = $('<td></td>').addClass('gameCol');
+			    	if (gameState[i][j] === true) {
+			    		col.addClass('alive');
+			    	}
+			    	row.append(col);
+			    }
+			    currentGameGrid.append(row);			    
+			}
+			
+			$('#gameView').empty();
+			$('#gameView').append(currentGameGrid);
 		}
-		$('#gameView').empty();
-		$('#gameView').append(gameGrid);
 		
-		return gameGrid;
+		return currentGameGrid;
 	}
 	
 	/**
